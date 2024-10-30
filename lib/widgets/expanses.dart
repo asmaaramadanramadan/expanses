@@ -43,7 +43,24 @@ class _ExpansesState extends State<Expanses> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Icon(Icons.menu),
         title: Text("Welcome"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) => SizedBox(
+                  height: 350,
+                  width: double.infinity,
+                  child: Text("data"),
+                ),
+              );
+              // showBottomSheet(context: context, builder:(context) => ,)
+            },
+            icon: Icon(Icons.add),
+          )
+        ],
       ),
       body: Center(
         child: Column(
