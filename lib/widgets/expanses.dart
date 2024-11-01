@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../models/expense.dart';
+import '../new_expanse.dart';
 import 'expanses_list/expanses_list.dart';
 
 class Expanses extends StatefulWidget {
@@ -43,22 +44,18 @@ class _ExpansesState extends State<Expanses> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.menu),
-        title: Text("Welcome"),
+        leading: const Icon(Icons.menu),
+        title: const Text("Welcome"),
         actions: [
           IconButton(
             onPressed: () {
               showModalBottomSheet(
                 context: context,
-                builder: (context) => SizedBox(
-                  height: 350,
-                  width: double.infinity,
-                  child: Text("data"),
-                ),
+                builder: (context) => AddNewExpense(),
               );
               // showBottomSheet(context: context, builder:(context) => ,)
             },
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
           )
         ],
       ),
