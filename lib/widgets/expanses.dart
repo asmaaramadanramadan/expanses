@@ -39,6 +39,17 @@ class _ExpansesState extends State<Expanses> {
       date: DateTime.now(),
     ),
   ];
+  void addExpenses(Expanse expense) {
+    setState(() {
+      _registeredExpenses.add(expense);
+    });
+  }
+
+  void removeExpenses(Expanse expense) {
+    setState(() {
+      _registeredExpenses.remove(expense);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +62,9 @@ class _ExpansesState extends State<Expanses> {
             onPressed: () {
               showModalBottomSheet(
                 context: context,
-                builder: (context) => AddNewExpense(),
+                builder: (context) => AddNewExpense(
+                  addExpense: addExpenses,
+                ),
               );
               // showBottomSheet(context: context, builder:(context) => ,)
             },
@@ -65,6 +78,7 @@ class _ExpansesState extends State<Expanses> {
             Text("Welcome"),
             Expanded(
               child: ExpensesList(
+                removeExpense: removeExpenses,
                 expenses: _registeredExpenses,
               ),
             ),

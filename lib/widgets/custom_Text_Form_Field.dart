@@ -28,20 +28,19 @@ class CustomTextField extends StatelessWidget {
           return null;
         }
       },
-      cursorColor: Colors.red,
       // kPrimaryColor,
       maxLines: maxLines,
       keyboardType: textInputType,
 
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(
-          color: Colors.red,
-        ),
+        // hintStyle: const TextStyle(
+        //   color: Colors.red,
+        // ),
         prefixText: prefixText,
         border: buildOutlineInputBorder(),
         enabledBorder: buildOutlineInputBorder(),
-        focusedBorder: buildOutlineInputBorder(Colors.green),
+        // focusedBorder: buildOutlineInputBorder(Colors.green),
         // enabledBorder:
       ),
     );
