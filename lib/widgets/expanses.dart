@@ -81,8 +81,10 @@ class _ExpansesState extends State<Expanses> {
         child: width < 600
             ? Column(
                 children: [
-                  Chart(
-                    expenses: _registeredExpenses,
+                  Expanded(
+                    child: Chart(
+                      expenses: _registeredExpenses,
+                    ),
                   ),
                   Expanded(
                     child: ExpensesList(
