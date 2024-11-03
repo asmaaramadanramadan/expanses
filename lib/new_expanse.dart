@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:expenses/widgets/custom_text_form_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/expense.dart';
@@ -10,17 +12,13 @@ class AddNewExpense extends StatelessWidget {
     super.key,
     required this.addExpense,
   });
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
-        child: SingleChildScrollView(
-          child: AddNoteForm(
-            addExpense: addExpense,
-          ),
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+      child: SingleChildScrollView(
+        child: AddNoteForm(addExpense: addExpense),
       ),
     );
   }
@@ -38,7 +36,7 @@ class AddNoteForm extends StatefulWidget {
 }
 
 class _AddNoteFormState extends State<AddNoteForm> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
   String? _title;
   double? _amount;
@@ -47,7 +45,7 @@ class _AddNoteFormState extends State<AddNoteForm> {
   Category _selectedCategory = Category.travel;
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime? pickedDate = await showDatePicker(
+    final pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
@@ -64,24 +62,9 @@ class _AddNoteFormState extends State<AddNoteForm> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      // Check if all required fields have values
       if (_title == null || _amount == null || _selectedDate == null) {
-        // Show an alert if any field is missing
-        showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: const Text("Missing Fields"),
-            content: const Text("Please ensure all fields are filled."),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(ctx);
-                },
-                child: const Text("Okay"),
-              ),
-            ],
-          ),
-        );
+        _showPlatformSpecificDialog(
+            context, "Missing Fields", "Please ensure all fields are filled.");
         return;
       }
 
@@ -96,16 +79,36 @@ class _AddNoteFormState extends State<AddNoteForm> {
       setState(() {
         _autovalidateMode = AutovalidateMode.always;
       });
+      _showPlatformSpecificDialog(
+          context, "Error", "Please fill all fields correctly.");
+    }
+  }
+
+  void _showPlatformSpecificDialog(
+      BuildContext context, String title, String content) {
+    if (Platform.isIOS) {
+      showCupertinoDialog(
+        context: context,
+        builder: (ctx) => CupertinoAlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: [
+            CupertinoDialogAction(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text("Okay"),
+            ),
+          ],
+        ),
+      );
+    } else {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text("Error"),
-          content: const Text("Please fill all fields correctly."),
+          title: Text(title),
+          content: Text(content),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.pop(ctx);
-              },
+              onPressed: () => Navigator.pop(ctx),
               child: const Text("Okay"),
             ),
           ],
@@ -123,19 +126,14 @@ class _AddNoteFormState extends State<AddNoteForm> {
         children: [
           CustomTextField(
             hint: "Title",
-            onSaved: (value) {
-              _title = value;
-            },
+            onSaved: (value) => _title = value,
           ),
           const SizedBox(height: 16),
           CustomTextField(
             hint: 'Amount',
-            maxLines: 1,
             prefixText: "\$",
             textInputType: TextInputType.number,
-            onSaved: (value) {
-              _amount = double.tryParse(value!);
-            },
+            onSaved: (value) => _amount = double.tryParse(value ?? ''),
           ),
           const SizedBox(height: 30),
           DropdownButton<Category>(
@@ -146,22 +144,16 @@ class _AddNoteFormState extends State<AddNoteForm> {
                       child: Text(e.name.toUpperCase()),
                     ))
                 .toList(),
-            onChanged: (value) {
-              if (value != null) {
-                setState(() {
-                  _selectedCategory = value;
-                });
-              }
-            },
+            onChanged: (value) => setState(() {
+              if (value != null) _selectedCategory = value;
+            }),
           ),
           const SizedBox(height: 30),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+                onPressed: () => Navigator.pop(context),
                 child: const Text("Cancel"),
               ),
               ElevatedButton(

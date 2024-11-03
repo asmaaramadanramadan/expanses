@@ -34,8 +34,8 @@ class Chart extends StatelessWidget {
     return LayoutBuilder(
       builder: (ctx, constraints) {
         return Container(
-          margin: EdgeInsets.all(16.0),
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          margin: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           width: double.infinity,
           height: constraints.maxHeight,
           decoration: BoxDecoration(
@@ -66,7 +66,7 @@ class Chart extends StatelessWidget {
               ),
               constraints.maxHeight < 200
                   ? Container()
-                  : SizedBox(
+                  : const SizedBox(
                       height: 12,
                     ),
               constraints.maxHeight < 200
@@ -75,7 +75,7 @@ class Chart extends StatelessWidget {
                       children: buckets
                           .map<Widget>((e) => Expanded(
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                     horizontal: 4,
                                   ),
                                   child: Icon(

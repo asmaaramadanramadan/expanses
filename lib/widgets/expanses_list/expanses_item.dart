@@ -33,6 +33,7 @@ class ExpensesItem extends StatelessWidget {
                 Row(
                   children: [
                     Icon(categoryIcons[expense.category]),
+                    //CircularProgressIndicator.adaptive(),
                     const SizedBox(
                       width: 4,
                     ),
