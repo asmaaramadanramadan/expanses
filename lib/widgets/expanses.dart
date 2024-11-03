@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
+import '../chart/chart.dart';
 import '../models/expense.dart';
 import '../new_expanse.dart';
 import 'expanses_list/expanses_list.dart';
@@ -53,6 +55,7 @@ class _ExpansesState extends State<Expanses> {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(Icons.menu),
@@ -61,6 +64,8 @@ class _ExpansesState extends State<Expanses> {
           IconButton(
             onPressed: () {
               showModalBottomSheet(
+                useSafeArea: true,
+                isScrollControlled: true,
                 context: context,
                 builder: (context) => AddNewExpense(
                   addExpense: addExpenses,
@@ -73,17 +78,35 @@ class _ExpansesState extends State<Expanses> {
         ],
       ),
       body: Center(
-        child: Column(
-          children: [
-            Text("Welcome"),
-            Expanded(
-              child: ExpensesList(
-                removeExpense: removeExpenses,
-                expenses: _registeredExpenses,
+        child: width < 600
+            ? Column(
+                children: [
+                  Chart(
+                    expenses: _registeredExpenses,
+                  ),
+                  Expanded(
+                    child: ExpensesList(
+                      removeExpense: removeExpenses,
+                      expenses: _registeredExpenses,
+                    ),
+                  ),
+                ],
+              )
+            : Row(
+                children: [
+                  Expanded(
+                    child: Chart(
+                      expenses: _registeredExpenses,
+                    ),
+                  ),
+                  Expanded(
+                    child: ExpensesList(
+                      removeExpense: removeExpenses,
+                      expenses: _registeredExpenses,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }

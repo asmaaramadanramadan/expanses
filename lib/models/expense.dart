@@ -21,6 +21,7 @@ class Expanse {
   final double amount;
   final DateTime date;
   final Category category;
+
   String get formatedDate {
     return dateFormat.format(date);
   }
@@ -31,4 +32,24 @@ class Expanse {
     required this.amount,
     required this.date,
   }) : id = uuid.v4();
+}
+
+class ExpensesBucket {
+  final Category category;
+  final List<Expanse> expanses;
+
+  ExpensesBucket(this.category, this.expanses);
+
+  ExpensesBucket.forCategory(this.category, List<Expanse> allExpanses)
+      : expanses = allExpanses
+            .where((element) => element.category == category)
+            .toList();
+
+  double get totalExpenses {
+    double sum = 0;
+    for (var expense in expanses) {
+      sum += expense.amount;
+    }
+    return sum;
+  }
 }

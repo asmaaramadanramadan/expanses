@@ -12,11 +12,14 @@ class AddNewExpense extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
-      child: SingleChildScrollView(
-        child: AddNoteForm(
-          addExpense: addExpense,
+    return SizedBox(
+      height: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
+        child: SingleChildScrollView(
+          child: AddNoteForm(
+            addExpense: addExpense,
+          ),
         ),
       ),
     );
